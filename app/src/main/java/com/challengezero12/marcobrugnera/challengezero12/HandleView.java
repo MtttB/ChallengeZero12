@@ -23,7 +23,7 @@ public class HandleView extends View{
 
     private void update() {
 
-        mBall.update();
+        mBall.move();
         try {
             Thread.sleep(1);
         } catch (InterruptedException e) {
