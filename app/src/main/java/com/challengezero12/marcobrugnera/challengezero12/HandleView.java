@@ -35,7 +35,7 @@ public class HandleView extends View{
         paddle = new Paddle(paddle_properties.get(0), paddle_properties.get(1), paddle_properties.get(2), paddle_properties.get(3));
         paddle.setColor(paddle_components_color.get(0), paddle_components_color.get(1), paddle_components_color.get(2), paddle_components_color.get(3));
 
-        engine = new Engine(ball);
+        engine = new Engine(ball, paddle);
 
 
     }
@@ -43,15 +43,9 @@ public class HandleView extends View{
 
     private void update() {
 
-        //ball.move();
         engine.moveBall();
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         this.invalidate();
+
     }
 
     @Override
@@ -70,6 +64,7 @@ public class HandleView extends View{
 
             case MotionEvent.ACTION_MOVE: {
                 Log.e("block update eve _MOVE", "ACTION_MOVE");
+                engine.movePaddle((int)event.getX());
                 break;
             }
             case MotionEvent.ACTION_UP: {

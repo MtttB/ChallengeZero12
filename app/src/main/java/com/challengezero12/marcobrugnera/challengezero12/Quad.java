@@ -26,4 +26,10 @@ public abstract class Quad {
     public void draw(Canvas c) {
         c.drawRect(r, p);
     }
+
+    public int getLeft() { return left; }
+    public int getTop() { return top; }
+    public int getRight() { return right; }
+    public int getBottom() { return bottom; }
+    public Rect getRect() { return r; }
 }

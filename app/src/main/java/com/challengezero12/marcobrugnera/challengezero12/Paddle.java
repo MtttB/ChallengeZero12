@@ -10,5 +10,8 @@ public class Paddle extends Quad {
         super(left, top, right, bottom);
     }
 
+    public void setPosition(int left, int top, int right, int bottom) {
+        getRect().set(left, top, right, bottom);
+    }
 
 }
