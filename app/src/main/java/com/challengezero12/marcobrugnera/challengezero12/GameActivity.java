@@ -10,7 +10,8 @@ import java.io.IOException;
 public class GameActivity extends Activity{
 
     private RelativeLayout layout;
-    HandleView hw;
+    private HandleView hw;
+    private Engine engine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +19,8 @@ public class GameActivity extends Activity{
         setContentView(R.layout.activity_game);
         layout = (RelativeLayout) findViewById(R.id.layout);
         try {
-            hw = new HandleView(this);
+            engine = new Engine(this);
+            hw = new HandleView(this, engine);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -32,7 +34,7 @@ public class GameActivity extends Activity{
         Log.e("onResume", "onResume");
         //Visualizzazione della TextView che indica all'utente come fare
         //per poter riprendere la partita in corso
-        hw.visualizeTextView(true);
+        //hw.visualizeTextView(true);
     }
 
     @Override
@@ -40,6 +42,6 @@ public class GameActivity extends Activity{
         Log.e("onPause", "onPause");
         super.onPause();
         //Metto in pausa l'esecuzione del gioco
-        hw.pauseGame();
+        engine.pauseGame();
     }
 }

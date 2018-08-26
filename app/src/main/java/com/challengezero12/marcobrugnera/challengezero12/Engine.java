@@ -1,16 +1,40 @@
 package com.challengezero12.marcobrugnera.challengezero12;
 
+import android.content.Context;
 import android.graphics.Rect;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class Engine {
 
     private Ball ball;
     private Paddle paddle;
+    private boolean game_is_running;
 
-    public Engine (Ball ball, Paddle paddle) {
-        this.ball   = ball;
-        this.paddle = paddle;
+
+    public Engine (Context context) throws IOException {
+        createBall(context);
+        createPaddle(context);
     }
+
+
+    private void createBall(Context context) throws IOException{
+        //Ball
+        ArrayList<Integer> ball_components_color = Util.getBallColorProperties(context);
+        ArrayList<Object> ball_properties = Util.getBallProperties(context);
+        ball = new Ball((double)ball_properties.get(0), (double)ball_properties.get(1), (double)ball_properties.get(2), (double)ball_properties.get(3), (int)ball_properties.get(4));
+        ball.setColor(ball_components_color.get(0), ball_components_color.get(1), ball_components_color.get(2), ball_components_color.get(3));
+    }
+
+    private void createPaddle(Context context) throws IOException{
+        //Paddle
+        ArrayList<Integer> paddle_components_color = Util.getPaddleColorProperties(context);
+        ArrayList<Integer> paddle_properties = Util.getPaddleProperties(context);
+        paddle = new Paddle(paddle_properties.get(0), paddle_properties.get(1), paddle_properties.get(2), paddle_properties.get(3));
+        paddle.setColor(paddle_components_color.get(0), paddle_components_color.get(1), paddle_components_color.get(2), paddle_components_color.get(3));
+    }
+
 
     public  void moveBall(){
 
@@ -64,7 +88,6 @@ public class Engine {
 
     }
 
-
     public void movePaddle(int x){
         int left = paddle.getLeft();
         int top = paddle.getTop();
@@ -74,4 +97,24 @@ public class Engine {
         paddle.setPosition(x, top, x + paddle_width, bottom);
 
     }
+
+    public void startGame() {
+        setGameRunningStatus(true);
+    }
+
+    public void pauseGame(){
+        setGameRunningStatus(false);
+    }
+
+    public void setGameRunningStatus (boolean game_is_running) {
+        this.game_is_running = game_is_running;
+    }
+
+    public boolean gameIsRunning() { return game_is_running; }
+
+    public Ball getBall() { return ball; }
+
+    public Paddle getPaddle () { return paddle; }
+
+
 }
