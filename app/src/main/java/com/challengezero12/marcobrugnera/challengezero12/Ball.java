@@ -11,6 +11,10 @@ public class Ball {
     private double posy;
     private double vx;
     private double vy;
+    private double initial_posx;
+    private double initial_posy;
+    private double initial_vx;
+    private double initial_vy;
     private int radius;
     private Paint p;
 
@@ -24,6 +28,10 @@ public class Ball {
         this.posy = posy;
         this.vx = vx;
         this.vy = vy;
+        this.initial_posx = posx;
+        this.initial_posy = posy;
+        this.initial_vx = vx;
+        this.initial_vy = vy;
         this.radius = radius;
         this.p = new Paint();
     }
@@ -52,6 +60,13 @@ public class Ball {
     public void upgradePosy(double val) { this.posy += val; }
     public void setVx(double vx)     { this.vx = vx; }
     public void setVy(double vy)     { this.vy = vy; }
+
+    public void resetToInitialSetup () {
+        this.posx = this.initial_posx;
+        this.posy = this.initial_posy;
+        this.vx = this.initial_vx;
+        this.vy = this.initial_vy;
+    }
 
 
 }

@@ -31,21 +31,20 @@ public class HandleView extends View{
     @Override
     public void onDraw(Canvas canvas) {
 
-        engine.getBall().draw(canvas);
-        engine.getPaddle().draw(canvas);
+        if (!engine.gameIsEnded()) {
+            engine.getBall().draw(canvas);
+            engine.getPaddle().draw(canvas);
 
-        BricksWall bricks_wall = engine.getBricksWall();
-        for (int i = 0; i < bricks_wall.getBricksWallSize(); i++) {
-            bricks_wall.getBrickAtPos(i).draw(canvas);
+            BricksWall bricks_wall = engine.getBricksWall();
+            for (int i = 0; i < bricks_wall.getBricksWallSize(); i++) {
+                bricks_wall.getBrickAtPos(i).draw(canvas);
+            }
+
+            if (engine.gameIsRunning()) {
+                visualizeTextView(false);
+                this.update();
+            }
         }
-
-
-        if (engine.gameIsRunning()) {
-            visualizeTextView(false);
-            this.update();
-        }
-        else
-            visualizeTextView(true);
     }
 
     @Override
@@ -86,5 +85,10 @@ public class HandleView extends View{
     public void displayScore (int score) {
         TextView tvscore = ((GameActivity) context).findViewById(R.id.score_value);
         tvscore.setText(Integer.toString(score));
+    }
+
+    public  void updateNumberOfLives(int lives) {
+        TextView tvlives = ((GameActivity) context).findViewById(R.id.lives_value);
+        tvlives.setText(Integer.toString(lives));
     }
 }

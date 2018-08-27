@@ -13,9 +13,12 @@ public class Engine {
     private Paddle paddle;
     private BricksWall bricks_wall;
     private boolean game_is_running;
+    private boolean game_is_ended;
     private Context context;
     private int score;
     private final int lives = 3;
+    private int remaining_lives;
+    private boolean end_game_with_victory;
 
 
     public Engine (Context context) throws IOException {
@@ -30,6 +33,10 @@ public class Engine {
 
     private void createLevel () throws IOException {
         score = 0;
+        remaining_lives = lives;
+        end_game_with_victory = false;
+        game_is_ended = false;
+        game_is_running = false;
         createBall();
         createPaddle();
         createBricksWall();
@@ -109,7 +116,67 @@ public class Engine {
     }
 
 
-    public  void moveBall(){
+    public void moveBall() {
+        double vx       = ball.getVx();
+        double vy       = ball.getVy();
+        ball.upgradePosx(vx);
+        ball.upgradePosy(vy);
+
+        int code = detectBallContainerWallCollision(vx, vy);
+        if(code == 0) {
+            //Se non determino una collisione con il paddle verifico una collisione con il muro
+            if (!detectBallPaddleCollision()) {
+                detectBallBricksWallDetection();
+            }
+        }
+        else {
+            if (code == 1) {
+                remaining_lives -= 1;
+                if (remaining_lives == 0) {
+                    game_is_ended = true;
+                }
+                pauseGame();
+                ball.resetToInitialSetup();
+                hw.updateNumberOfLives(remaining_lives);
+            }
+        }
+    }
+
+    public int detectBallContainerWallCollision (double vx, double vy) {
+        double posx     = ball.getPosx();
+        double posy     = ball.getPosy();
+        double height   = ball.getHeight();
+        double width    = ball.getWidth();
+        int radius      = ball.getRadius();
+        int code        = 0;
+
+        if (posy >= (height - radius)) {
+            ball.setVy(0 - Math.abs(vy));
+            //vy = ball.getVy();
+            code = 1; //bottom
+        }
+
+        if (posy <= (0 + radius)) {
+            ball.setVy(Math.abs(vy));
+            code = 2; //top
+        }
+
+        if (posx >= (width - radius)) {
+            ball.setVx(0 - Math.abs(vx));
+            //vx = ball.getVx();
+            code = 3; //left
+        }
+
+        if (posx <= (0 + radius)) {
+            ball.setVx(Math.abs(vx));
+            code = 4; //rigth
+        }
+
+        return code;
+    }
+
+
+    public  void moveBallOLD(){
 
         double posx     = ball.getPosx();
         double posy     = ball.getPosy();
@@ -290,6 +357,7 @@ public class Engine {
 
     public void pauseGame(){
         setGameRunningStatus(false);
+        hw.visualizeTextView(true);
     }
 
     public void setGameRunningStatus (boolean game_is_running) {
@@ -303,5 +371,9 @@ public class Engine {
     public Paddle getPaddle () { return paddle; }
 
     public BricksWall getBricksWall () { return  bricks_wall; }
+
+    public boolean gameIsEnded() { return game_is_ended; }
+
+    public boolean getGameEndedWithVictory() { return end_game_with_victory; }
 
 }
