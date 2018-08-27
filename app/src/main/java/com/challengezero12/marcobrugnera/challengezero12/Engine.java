@@ -61,12 +61,15 @@ public class Engine {
         int number_of_linees = brick_and_wall_properties.get(0);
         int bricks_per_line  = brick_and_wall_properties.get(1);
 
-        if (bricks_per_line % 2 != 0) {
-            //creo i mattoni a centro dello schermo
-            int left  = half_screen_width - half_brick_width;
-            int right = half_screen_width + half_brick_width;
 
-            boolean color = true;
+        //creo i mattoni a centro dello schermo
+        int left  = half_screen_width;
+        int right = half_screen_width;
+        boolean color = true;
+        if (bricks_per_line % 2 != 0) {
+            left  = half_screen_width - half_brick_width;
+            right = half_screen_width + half_brick_width;
+            color = true;
             for ( int n = 0; n < number_of_linees; n++) {
                 Brick tmp = new Brick(left, top_first_bricks_line + (n * brick_height) /*+ 10*/, right, top_first_bricks_line + ((n + 1) * brick_height));
                 //Alterno i colori ad ogni riga
@@ -77,14 +80,33 @@ public class Engine {
                     tmp.setColor(brick_components_color.get(0), brick_components_color.get(3), brick_components_color.get(2), brick_components_color.get(1));
                     color = true;
                 }
-                tmp.setBorder();
+                //tmp.setBorder();
                 bricks_wall.addBrick(tmp);
             }
+        }
 
+        for (int i = 1; i <= (bricks_per_line / 2) ; i++) {
+            for (int n = 0; n < number_of_linees; n++ ) {
+                Brick tmp_1 = new Brick(left - (brick_width * i), top_first_bricks_line + (n * brick_height) /*+ 10*/, left - (brick_width * (i - 1)), top_first_bricks_line + ((n + 1) * brick_height));
+                //Brick tmp_2 = new Brick(2 * half_brick_width - left - (brick_width * i), top_first_bricks_line + (n * brick_height) /*+ 10*/, (2 * half_brick_width - left - (brick_width * i)) + brick_width, top_first_bricks_line + ((n + 1) * brick_height));
+                Brick tmp_2 = new Brick(right + (brick_width * (i - 1)), top_first_bricks_line + (n * brick_height) /*+ 10*/, right + (brick_width * i), top_first_bricks_line + ((n + 1) * brick_height));
+                if (color) {
+                    tmp_1.setColor(brick_components_color.get(0), brick_components_color.get(1), brick_components_color.get(2), brick_components_color.get(3));
+                    tmp_2.setColor(brick_components_color.get(0), brick_components_color.get(1), brick_components_color.get(2), brick_components_color.get(3));
+                    //tmp_2.setBorder();
+                    color = false;
+                }else {
+                    tmp_1.setColor(brick_components_color.get(0), brick_components_color.get(3), brick_components_color.get(2), brick_components_color.get(1));
+                    tmp_2.setColor(brick_components_color.get(0), brick_components_color.get(3), brick_components_color.get(2), brick_components_color.get(1));
+                    //tmp_2.setBorder();
+                    color = true;
+                }
+                bricks_wall.addBrick(tmp_1);
+                bricks_wall.addBrick(tmp_2);
+            }
         }
 
 
-        int i = 0;
 
 
         /*
