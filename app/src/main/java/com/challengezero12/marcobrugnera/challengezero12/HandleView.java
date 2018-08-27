@@ -15,10 +15,10 @@ public class HandleView extends View{
 
     private Context context;
 
-    public HandleView(Context context, Engine engine) throws IOException {
+    public HandleView(Context context) throws IOException {
         super(context);
         this.context = context;
-        this.engine = engine;
+        this.engine = ((GameActivity)context).getEngine();
     }
 
 
@@ -33,6 +33,13 @@ public class HandleView extends View{
 
         engine.getBall().draw(canvas);
         engine.getPaddle().draw(canvas);
+
+        BricksWall bricks_wall = engine.getBricksWall();
+        for (int i = 0; i < bricks_wall.getBricksWallSize(); i++) {
+            bricks_wall.getBrickAtPos(i).draw(canvas);
+        }
+
+
         if (engine.gameIsRunning()) {
             visualizeTextView(false);
             this.update();
@@ -74,5 +81,10 @@ public class HandleView extends View{
             tview.setVisibility(TextView.VISIBLE);
         else
             tview.setVisibility(TextView.INVISIBLE);
+    }
+
+    public void displayScore (int score) {
+        TextView tvscore = ((GameActivity) context).findViewById(R.id.score_value);
+        tvscore.setText(Integer.toString(score));
     }
 }

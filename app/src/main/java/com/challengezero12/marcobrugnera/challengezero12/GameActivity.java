@@ -20,7 +20,8 @@ public class GameActivity extends Activity{
         layout = (RelativeLayout) findViewById(R.id.layout);
         try {
             engine = new Engine(this);
-            hw = new HandleView(this, engine);
+            hw = new HandleView(this);
+            engine.setHandleViewReference();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,5 +44,11 @@ public class GameActivity extends Activity{
         super.onPause();
         //Metto in pausa l'esecuzione del gioco
         engine.pauseGame();
+    }
+
+    public HandleView getHandleView () { return hw; }
+
+    public Engine getEngine() {
+        return engine;
     }
 }

@@ -8,18 +8,91 @@ import java.util.ArrayList;
 
 public class Engine {
 
+    private HandleView hw;
     private Ball ball;
     private Paddle paddle;
+    private BricksWall bricks_wall;
     private boolean game_is_running;
+    private Context context;
+    private int score;
+    private final int lives = 3;
 
 
     public Engine (Context context) throws IOException {
-        createBall(context);
-        createPaddle(context);
+        this.context = context;
+        createLevel();
+
+    }
+
+    public void setHandleViewReference() {
+        hw = ((GameActivity) context).getHandleView();
+    }
+
+    private void createLevel () throws IOException {
+        score = 0;
+        createBall();
+        createPaddle();
+        createBricksWall();
+    }
+
+    private void createBricksWall() throws IOException {
+
+        bricks_wall = new BricksWall();
+        ArrayList<Integer> brick_and_wall_properties = Util.getBricksAndWallProperties(context);
+        ArrayList<Integer> brick_components_color =  Util.getBrickColorProperties(context);
+
+        int screen_height      = context.getResources().getDisplayMetrics().heightPixels;
+        int screen_width       = context.getResources().getDisplayMetrics().widthPixels;
+        int brick_width        = brick_and_wall_properties.get(2);
+        int brick_height       = brick_and_wall_properties.get(3);
+        int half_screen_height = screen_height / 2;
+        int half_screen_width  = screen_width / 2;
+        int half_brick_width   = brick_width / 2;
+        int half_brick_height  = brick_height / 2;
+        int top_first_bricks_line = (screen_height * 10) / 100;
+
+        int number_of_linees = brick_and_wall_properties.get(0);
+        int bricks_per_line  = brick_and_wall_properties.get(1);
+
+        if (bricks_per_line % 2 != 0) {
+            //creo i mattoni a centro dello schermo
+            int left  = half_screen_width - half_brick_width;
+            int right = half_screen_width + half_brick_width;
+
+            boolean color = true;
+            for ( int n = 0; n < number_of_linees; n++) {
+                Brick tmp = new Brick(left, top_first_bricks_line + (n * brick_height) /*+ 10*/, right, top_first_bricks_line + ((n + 1) * brick_height));
+                //Alterno i colori ad ogni riga
+                if (color) {
+                    tmp.setColor(brick_components_color.get(0), brick_components_color.get(1), brick_components_color.get(2), brick_components_color.get(3));
+                    color = false;
+                }else {
+                    tmp.setColor(brick_components_color.get(0), brick_components_color.get(3), brick_components_color.get(2), brick_components_color.get(1));
+                    color = true;
+                }
+                tmp.setBorder();
+                bricks_wall.addBrick(tmp);
+            }
+
+        }
+
+
+        int i = 0;
+
+
+        /*
+        for (int line = 0; line < brick_and_wall_properties.get(0); line++) {
+            for (int n = 0; n < brick_and_wall_properties.get(1); n++) {
+
+            }
+        }
+        */
+
+
     }
 
 
-    private void createBall(Context context) throws IOException{
+    private void createBall() throws IOException{
         //Ball
         ArrayList<Integer> ball_components_color = Util.getBallColorProperties(context);
         ArrayList<Object> ball_properties = Util.getBallProperties(context);
@@ -27,7 +100,7 @@ public class Engine {
         ball.setColor(ball_components_color.get(0), ball_components_color.get(1), ball_components_color.get(2), ball_components_color.get(3));
     }
 
-    private void createPaddle(Context context) throws IOException{
+    private void createPaddle() throws IOException{
         //Paddle
         ArrayList<Integer> paddle_components_color = Util.getPaddleColorProperties(context);
         ArrayList<Integer> paddle_properties = Util.getPaddleProperties(context);
@@ -65,9 +138,107 @@ public class Engine {
         if (posx <= (0 + radius))
             ball.setVx(Math.abs(vx));
 
-        detectBallPaddleCollision();
+        //Se non determino una collisione con il paddle verifico una collisione con il muro
+        if(!detectBallPaddleCollision()) {
+            detectBallBricksWallDetection();
+        }
     }
 
+    private void detectBallBricksWallDetection() {
+        //quelli in fondo sono i primi che saranno colpiti
+        for (int i = bricks_wall.getBricksWallSize() - 1; i >= 0; i--) {
+            Brick tmp = bricks_wall.getBrickAtPos(i);
+            boolean collision = detectBallBrickCollision(tmp);
+            if (collision){
+                score += tmp.getScoreForCollision();
+                hw.displayScore(score);
+                tmp.decreaseBrickLife();
+                if (tmp.isBrickBroken()) {
+                    bricks_wall.removeBrick(tmp);
+                    break;
+                }
+            }
+        }
+    }
+
+    private boolean detectBallObjectCollision(Rect r) {
+        double posx       = ball.getPosx();
+        double posy       = ball.getPosy();
+        double vx         = ball.getVx();
+        double vy         = ball.getVy();
+        int radius        = ball.getRadius();
+
+        //Collision on Top
+        if ((r.contains((int)posx, (int)posy + radius))) {
+            ball.setVy(0 - Math.abs(vy));
+            return true;
+        }
+
+        //Collision on Bottom
+        if ((r.contains((int)posx, (int)posy - radius))) {
+            ball.setVy(Math.abs(vy));
+            return true;
+        }
+
+        if ((r.contains((int)posx + radius, (int)posy))) {
+            ball.setVx(0 - Math.abs(vx));
+            return true;
+        }
+
+        if ((r.contains((int)posx - radius, (int)posy))) {
+            ball.setVx(Math.abs(vx));
+            return true;
+        }
+
+        return false;
+
+    }
+
+    private boolean detectBallBrickCollision(Brick brick) {
+        return detectBallObjectCollision(brick.getRect());
+    }
+
+    private boolean detectBallPaddleCollision(){
+        return detectBallObjectCollision(paddle.getRect());
+    }
+
+    /*
+    private boolean detectBallBrickCollision(Brick brick) {
+        Rect r            = brick.getRect();
+        double posx       = ball.getPosx();
+        double posy       = ball.getPosy();
+        double vx         = ball.getVx();
+        double vy         = ball.getVy();
+        int radius        = ball.getRadius();
+
+        //Collision on Top
+        if ((r.contains((int)posx, (int)posy + radius))) {
+            ball.setVy(0 - Math.abs(vy));
+            return true;
+        }
+
+        //Collision on Bottom
+        if ((r.contains((int)posx, (int)posy - radius))) {
+            ball.setVy(Math.abs(vy));
+            return true;
+        }
+
+        if ((r.contains((int)posx + radius, (int)posy))) {
+            ball.setVx(0 - Math.abs(vx));
+            return true;
+        }
+
+        if ((r.contains((int)posx - radius, (int)posy))) {
+            ball.setVx(Math.abs(vx));
+            return true;
+        }
+
+        return false;
+    }
+    */
+
+
+    /*
     private void detectBallPaddleCollision(){
         Rect r          = paddle.getRect();
         double posx     = ball.getPosx();
@@ -76,17 +247,29 @@ public class Engine {
         double vy       = ball.getVy();
         int radius      = ball.getRadius();
 
-        if ((r.contains((int)posx, (int)posy + radius)) || (r.contains((int)posx, (int)posy - radius))) {
+
+        if ((r.contains((int)posx, (int)posy + radius))) {
             //ball.setVx(0 - Math.abs(vx));
-            ball.setVy(0 - Math.abs(vy));
+            ball.setVy(0 - Math.abs(vy)); //top
         }
 
-        if ((r.contains((int)posx + radius, (int)posy)) || (r.contains((int)posx - radius, (int)posy))) {
+        if ((r.contains((int)posx, (int)posy - radius))) {
+            //ball.setVx(0 - Math.abs(vx));
+            ball.setVy(Math.abs(vy)); //bottom
+        }
+
+        if ((r.contains((int)posx + radius, (int)posy))) {
             ball.setVx(0 - Math.abs(vx));
             //ball.setVy(0 - Math.abs(vy));
         }
 
+        if ((r.contains((int)posx - radius, (int)posy))) {
+            ball.setVx(Math.abs(vx));
+            //ball.setVy(0 - Math.abs(vy));
+        }
+
     }
+    */
 
     public void movePaddle(int x){
         int left = paddle.getLeft();
@@ -94,8 +277,11 @@ public class Engine {
         int right= paddle.getRight();
         int bottom = paddle.getBottom();
         int paddle_width = right - left;
-        paddle.setPosition(x, top, x + paddle_width, bottom);
+        int screen_width = context.getResources().getDisplayMetrics().widthPixels;
 
+        //controllo se il paddle va fuori schermo
+        if ((x + paddle_width) > screen_width ) return;
+        paddle.setPosition(x, top, x + paddle_width, bottom);
     }
 
     public void startGame() {
@@ -116,5 +302,6 @@ public class Engine {
 
     public Paddle getPaddle () { return paddle; }
 
+    public BricksWall getBricksWall () { return  bricks_wall; }
 
 }
