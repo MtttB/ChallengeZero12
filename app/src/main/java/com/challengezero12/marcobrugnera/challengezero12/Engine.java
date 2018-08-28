@@ -143,7 +143,7 @@ public class Engine {
                 remaining_lives -= 1;
                 if (remaining_lives == 0) {
                     game_is_ended = true;
-                    visualizeDialogEndGame();
+                    hw.visualizeEndGameDialog();
                 }
                 pauseGame();
                 ball.resetToInitialSetup();
@@ -366,41 +366,6 @@ public class Engine {
         //controllo se il paddle va fuori schermo
         if ((x + paddle_width) > screen_width ) return;
         paddle.setPosition(x, top, x + paddle_width, bottom);
-    }
-
-
-    public void visualizeDialogEndGame() {
-
-        ((GameActivity) context).visualizeEndGameDialog();
-
-        /*
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(((GameActivity) context));
-        View mView = ((GameActivity) context).getLayoutInflater().inflate(R.layout.dialog_layout, null);
-        final EditText name = (EditText) mView.findViewById(R.id.editTextName);
-        Button invio = (Button) mView.findViewById(R.id.btnInvio);
-
-        //mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        /*
-        invio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!name.getText().toString().isEmpty()){
-                    Toast.makeText(context,
-                            R.string.invio_successo,
-                            Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }else{
-                    Toast.makeText(context,
-                            R.string.errore_mancato_inserimento_name,
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        */
-
-
     }
 
 

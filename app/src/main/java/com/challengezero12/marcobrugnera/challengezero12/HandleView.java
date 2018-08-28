@@ -1,13 +1,18 @@
 package com.challengezero12.marcobrugnera.challengezero12;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class HandleView extends View{
 
@@ -90,5 +95,37 @@ public class HandleView extends View{
     public  void updateNumberOfLives(int lives) {
         TextView tvlives = ((GameActivity) context).findViewById(R.id.lives_value);
         tvlives.setText(Integer.toString(lives));
+    }
+
+    public void visualizeEndGameDialog() {
+        AlertDialog.Builder alertDialogBuilder;
+        final AlertDialog alertDialog;
+        alertDialogBuilder = new android.app.AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme));
+        View mView = ((GameActivity)context).getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        alertDialogBuilder.setView(mView);
+        Button invio = (Button) mView.findViewById(R.id.btnInvio);
+
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        invio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(((GameActivity)context).getApplicationContext(),
+                        R.string.invio_successo,
+                        Toast.LENGTH_SHORT).show();
+                new Thread() {
+                    public void run() {
+                        try {
+                            new URL("http://www.google.it").getContent();
+                            ((GameActivity)context).finish();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+
+                alertDialog.dismiss();
+            }
+        });
     }
 }

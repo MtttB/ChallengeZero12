@@ -59,7 +59,6 @@ public class GameActivity extends Activity{
     }
 
     public void visualizeEndGameDialog() {
-        layout.removeView(hw);
         AlertDialog.Builder alertDialogBuilder;
         final AlertDialog alertDialog;
         alertDialogBuilder = new android.app.AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
@@ -78,7 +77,7 @@ public class GameActivity extends Activity{
                 new Thread() {
                     public void run() {
                         try {
-                            new URL("http://www.stackoverflow.com").getContent();
+                            new URL("http://www.google.it").getContent();
                             finish();
                         } catch (IOException e) {
                             e.printStackTrace();
