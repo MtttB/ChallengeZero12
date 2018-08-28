@@ -143,7 +143,7 @@ public class Engine {
                 remaining_lives -= 1;
                 if (remaining_lives == 0) {
                     game_is_ended = true;
-                    hw.visualizeEndGameDialog();
+                    hw.visualizeEndGameDialog(score);
                 }
                 pauseGame();
                 ball.resetToInitialSetup();
@@ -398,5 +398,6 @@ public class Engine {
     public boolean gameIsEnded() { return game_is_ended; }
 
     public boolean getGameEndedWithVictory() { return end_game_with_victory; }
+
 
 }

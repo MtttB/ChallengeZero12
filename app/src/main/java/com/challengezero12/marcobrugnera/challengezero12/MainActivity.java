@@ -8,6 +8,9 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
+    private int REQUEST_CODE = 1;
+    public RankingList ranking_list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,9 +22,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getBaseContext(), GameActivity.class);
-                startActivity(intent);
+                intent.putExtra("ranking_list","prova");
+                //startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            ranking_list = (RankingList)((data.getBundleExtra("bundle")).getSerializable("ranking_list"));
+            int h = 0;
+        }
     }
 
 }

@@ -1,23 +1,19 @@
 package com.challengezero12.marcobrugnera.challengezero12;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
-import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class GameActivity extends Activity{
 
     private RelativeLayout layout;
     private HandleView hw;
     private Engine engine;
+    public RankingList ranking_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +22,8 @@ public class GameActivity extends Activity{
         layout = (RelativeLayout) findViewById(R.id.layout);
         try {
             engine = new Engine(this);
-            hw = new HandleView(this);
+            ranking_list = new RankingList();
+            hw = new HandleView(this, ranking_list);
             engine.setHandleViewReference();
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,35 +55,16 @@ public class GameActivity extends Activity{
         return engine;
     }
 
-    public void visualizeEndGameDialog() {
-        AlertDialog.Builder alertDialogBuilder;
-        final AlertDialog alertDialog;
-        alertDialogBuilder = new android.app.AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
-        View mView = getLayoutInflater().inflate(R.layout.dialog_layout, null);
-        alertDialogBuilder.setView(mView);
-        Button invio = (Button) mView.findViewById(R.id.btnInvio);
 
-        alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-        invio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(),
-                            R.string.invio_successo,
-                            Toast.LENGTH_SHORT).show();
-                new Thread() {
-                    public void run() {
-                        try {
-                            new URL("http://www.google.it").getContent();
-                            finish();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }.start();
+    @Override
+    public void finish() {
 
-                alertDialog.dismiss();
-            }
-        });
+        Intent data = new Intent();
+        data.putExtra("return_intent_game_activity", "");
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("ranking_list",ranking_list);
+        data.putExtra("bundle",bundle);
+        setResult(RESULT_OK, data);
+        super.finish();
     }
 }

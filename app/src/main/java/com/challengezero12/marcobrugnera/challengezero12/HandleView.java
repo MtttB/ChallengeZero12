@@ -3,27 +3,29 @@ package com.challengezero12.marcobrugnera.challengezero12;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
-import java.net.URL;
 
 public class HandleView extends View{
 
     private Engine engine;
-
     private Context context;
+    private RankingList ranking_list;
 
-    public HandleView(Context context) throws IOException {
+    public HandleView(Context context, RankingList rl) throws IOException {
         super(context);
         this.context = context;
         this.engine = ((GameActivity)context).getEngine();
+        this.ranking_list = rl;
     }
 
 
@@ -97,32 +99,24 @@ public class HandleView extends View{
         tvlives.setText(Integer.toString(lives));
     }
 
-    public void visualizeEndGameDialog() {
+    public void visualizeEndGameDialog(final int score) {
         AlertDialog.Builder alertDialogBuilder;
         final AlertDialog alertDialog;
         alertDialogBuilder = new android.app.AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme));
         View mView = ((GameActivity)context).getLayoutInflater().inflate(R.layout.dialog_layout, null);
         alertDialogBuilder.setView(mView);
-        Button invio = (Button) mView.findViewById(R.id.btnInvio);
+        Button btnInvio = (Button) mView.findViewById(R.id.btnInvio);
+        final EditText editT = (EditText) mView.findViewById(R.id.editTextName);
 
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-        invio.setOnClickListener(new View.OnClickListener() {
+        btnInvio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(((GameActivity)context).getApplicationContext(),
                         R.string.invio_successo,
                         Toast.LENGTH_SHORT).show();
-                new Thread() {
-                    public void run() {
-                        try {
-                            new URL("http://www.google.it").getContent();
-                            ((GameActivity)context).finish();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }.start();
+                AsyncTask task = new NetworkTask(((GameActivity)context), ranking_list).execute(editT.getText().toString(), Integer.toString(score));
 
                 alertDialog.dismiss();
             }
