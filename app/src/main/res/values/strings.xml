@@ -3,4 +3,10 @@
     <string name="user_action_required">Toccare lo schermo per iniziare/riprendere il gioco</string>
     <string name="punteggio">Punteggio:</string>
     <string name="vite">Vite:</string>
+    <string name="punteggio_dialog">Punteggio</string>
+    <string name="nome">Nome</string>
+    <string name="invio">Invio</string>
+    <string name="invio_successo">Invio avvenuto con successo</string>
+    <string name="errore_mancato_inserimento_name">Si è pregati di inserire il valore name per poter procedere.</string>
+    <string name="testo_edit_dialog">Inserisci il nome</string>
 </resources>

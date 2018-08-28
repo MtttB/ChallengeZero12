@@ -1,11 +1,17 @@
 package com.challengezero12.marcobrugnera.challengezero12;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class GameActivity extends Activity{
 
@@ -50,5 +56,38 @@ public class GameActivity extends Activity{
 
     public Engine getEngine() {
         return engine;
+    }
+
+    public void visualizeEndGameDialog() {
+        layout.removeView(hw);
+        AlertDialog.Builder alertDialogBuilder;
+        final AlertDialog alertDialog;
+        alertDialogBuilder = new android.app.AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AppTheme));
+        View mView = getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        alertDialogBuilder.setView(mView);
+        Button invio = (Button) mView.findViewById(R.id.btnInvio);
+
+        alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        invio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),
+                            R.string.invio_successo,
+                            Toast.LENGTH_SHORT).show();
+                new Thread() {
+                    public void run() {
+                        try {
+                            new URL("http://www.stackoverflow.com").getContent();
+                            finish();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }.start();
+
+                alertDialog.dismiss();
+            }
+        });
     }
 }

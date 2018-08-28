@@ -16,7 +16,7 @@ public class Engine {
     private boolean game_is_ended;
     private Context context;
     private int score;
-    private final int lives = 3;
+    private final int lives = 1;
     private int remaining_lives;
     private boolean end_game_with_victory;
 
@@ -105,19 +105,6 @@ public class Engine {
                 bricks_wall.addBrick(tmp_2);
             }
         }
-
-
-
-
-        /*
-        for (int line = 0; line < brick_and_wall_properties.get(0); line++) {
-            for (int n = 0; n < brick_and_wall_properties.get(1); n++) {
-
-            }
-        }
-        */
-
-
     }
 
 
@@ -156,6 +143,7 @@ public class Engine {
                 remaining_lives -= 1;
                 if (remaining_lives == 0) {
                     game_is_ended = true;
+                    visualizeDialogEndGame();
                 }
                 pauseGame();
                 ball.resetToInitialSetup();
@@ -198,6 +186,7 @@ public class Engine {
     }
 
 
+    /*
     public  void moveBallOLD(){
 
         double posx     = ball.getPosx();
@@ -232,6 +221,7 @@ public class Engine {
             detectBallBricksWallDetection();
         }
     }
+    */
 
     private void detectBallBricksWallDetection() {
         //quelli in fondo sono i primi che saranno colpiti
@@ -244,6 +234,11 @@ public class Engine {
                 tmp.decreaseBrickLife();
                 if (tmp.isBrickBroken()) {
                     bricks_wall.removeBrick(tmp);
+                    //controllo se era l'ultimo rimasto --> il giocatore ha vinto
+                    if (bricks_wall.getBricksWallSize() == 0) {
+                        setGameIsEnded();
+                        setGameEndedWithVictory(true);
+                    }
                     break;
                 }
             }
@@ -373,6 +368,43 @@ public class Engine {
         paddle.setPosition(x, top, x + paddle_width, bottom);
     }
 
+
+    public void visualizeDialogEndGame() {
+
+        ((GameActivity) context).visualizeEndGameDialog();
+
+        /*
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(((GameActivity) context));
+        View mView = ((GameActivity) context).getLayoutInflater().inflate(R.layout.dialog_layout, null);
+        final EditText name = (EditText) mView.findViewById(R.id.editTextName);
+        Button invio = (Button) mView.findViewById(R.id.btnInvio);
+
+        //mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        /*
+        invio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!name.getText().toString().isEmpty()){
+                    Toast.makeText(context,
+                            R.string.invio_successo,
+                            Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(context,
+                            R.string.errore_mancato_inserimento_name,
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        */
+
+
+    }
+
+
+
     public void startGame() {
         setGameRunningStatus(true);
     }
@@ -385,6 +417,10 @@ public class Engine {
     public void setGameRunningStatus (boolean game_is_running) {
         this.game_is_running = game_is_running;
     }
+
+    public void setGameIsEnded () { this.game_is_ended = true; }
+
+    public void setGameEndedWithVictory (boolean b) { this.end_game_with_victory = b;}
 
     public boolean gameIsRunning() { return game_is_running; }
 
