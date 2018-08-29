@@ -108,18 +108,32 @@ public class HandleView extends View{
         alertDialogBuilder.setView(mView);
         Button btnInvio = (Button) mView.findViewById(R.id.btnInvio);
         final EditText editT = (EditText) mView.findViewById(R.id.editTextName);
+        TextView tvscore = (TextView) mView.findViewById(R.id.labelScoreValue);
+        tvscore.setText(Integer.toString(score));
 
+        String stitle    = context.getString(R.string.fine_partita);
+        alertDialogBuilder.setTitle(stitle)
+                .setCancelable(false);
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
         btnInvio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(((GameActivity)context).getApplicationContext(),
-                        R.string.invio_successo,
-                        Toast.LENGTH_SHORT).show();
-                AsyncTask task = new NetworkTask(((GameActivity)context), ranking_list).execute(editT.getText().toString(), Integer.toString(score));
 
-                alertDialog.dismiss();
+                if (editT.getText().toString().compareTo("") == 0){
+                    Toast.makeText(((GameActivity)context).getApplicationContext(),
+                            R.string.messaggio_mancato_inserimento_nome,
+                            Toast.LENGTH_SHORT).show();
+                }
+                else {
+
+                    Toast.makeText(((GameActivity) context).getApplicationContext(),
+                            R.string.invio_successo,
+                            Toast.LENGTH_SHORT).show();
+                    AsyncTask task = new NetworkTask(((GameActivity) context), ranking_list).execute(editT.getText().toString(), Integer.toString(score));
+
+                    alertDialog.dismiss();
+                }
             }
         });
     }

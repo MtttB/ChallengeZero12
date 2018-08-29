@@ -238,6 +238,7 @@ public class Engine {
                     if (bricks_wall.getBricksWallSize() == 0) {
                         setGameIsEnded();
                         setGameEndedWithVictory(true);
+                        hw.visualizeEndGameDialog(score);
                     }
                     break;
                 }

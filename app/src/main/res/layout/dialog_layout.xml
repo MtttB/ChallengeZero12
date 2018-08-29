@@ -25,32 +25,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/punteggio_dialog"
-            android:textSize="13sp"/>
+            android:textColor="@android:color/black"
+            android:textSize="18sp"/>
         <TextView
             android:id="@+id/labelScoreValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="13dp"
-            android:textSize="13sp"
+            android:textSize="18sp"
             android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="15dp">
         <TextView
             android:id="@+id/labelName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textSize="18sp"
             android:textColor="@android:color/black"
             android:text="@string/nome"/>
         <EditText
             android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="13sp"
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
             android:hint="@string/testo_edit_dialog"
             android:layout_marginLeft="15dp"
             android:inputType="text" />
@@ -61,8 +63,9 @@
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/black"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
         android:text="@string/invio"
-        android:textColor="@android:color/white" />
+        android:background="@android:color/white"
+        android:textColor="@android:color/black" />
 </LinearLayout>
