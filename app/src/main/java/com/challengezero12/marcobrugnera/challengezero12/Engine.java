@@ -16,7 +16,7 @@ public class Engine {
     private boolean game_is_ended;
     private Context context;
     private int score;
-    private final int lives = 1;
+    private final int lives = 3;
     private int remaining_lives;
     private boolean end_game_with_victory;
 

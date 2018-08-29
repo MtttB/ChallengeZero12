@@ -18,6 +18,10 @@ public class RankingList implements Serializable{
     public boolean isEmpty() { return ranking_list.size() == 0 ? true : false; }
 
     public void add (String name, int score) {
-        ranking_list.add(new PairPlayerScore(name,score));
+        ranking_list.add(new PairPlayerScore(name, score));
+    }
+
+    public void add (String name, int score, boolean b) {
+        ranking_list.add(new PairPlayerScore(name, score, b));
     }
 }

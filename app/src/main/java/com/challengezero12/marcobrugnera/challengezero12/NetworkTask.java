@@ -44,7 +44,7 @@ public class NetworkTask extends AsyncTask<String, Void, Void> {
             JSONObject json_object = new JSONObject(json_string);
             JSONObject scores = json_object.getJSONObject("scores");
 
-            ranking_list.add(values[0].toLowerCase(),Integer.parseInt(values[1]));
+            ranking_list.add(values[0].toLowerCase(),Integer.parseInt(values[1]), true);
 
             for(Iterator<String> iter = scores.keys(); iter.hasNext();) {
                 String key = iter.next();

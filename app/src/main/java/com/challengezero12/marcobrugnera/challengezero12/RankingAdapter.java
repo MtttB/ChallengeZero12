@@ -1,6 +1,8 @@
 package com.challengezero12.marcobrugnera.challengezero12;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,18 @@ public class RankingAdapter extends ArrayAdapter<PairPlayerScore> {
         TextView player_score = (TextView) listItemView.findViewById(R.id.player_score);
         //player_score.setText(pps.getScore());
         player_score.setText(Integer.toString(pps.getScore()));
+
+        Log.e("1 + 2", position + " | " + pps.isThePlayerJustPlayedinLocal());
+
+        if (pps.isThePlayerJustPlayedinLocal()) {
+            player_position.setTextColor(Color.YELLOW);
+            player_name.setTextColor(Color.YELLOW);
+            player_score.setTextColor(Color.YELLOW);
+        }else {
+            player_position.setTextColor(Color.WHITE);
+            player_name.setTextColor(Color.WHITE);
+            player_score.setTextColor(Color.WHITE);
+        }
 
 
         // Return the list item view that is now showing the appropriate data
