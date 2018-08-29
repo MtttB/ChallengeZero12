@@ -9,4 +9,8 @@
     <string name="invio_successo">Invio avvenuto con successo</string>
     <string name="errore_mancato_inserimento_name">Si è pregati di inserire il valore name per poter procedere.</string>
     <string name="testo_edit_dialog">Inserisci il nome</string>
+    <string name="titolo_dialog_back_button">Richiesta conferma</string>
+    <string name="messaggio_dialog_back_button">Sei sicuro di voler terminare la partita in corso? Operazione irreversibile.</string>
+    <string name="si">SI</string>
+    <string name="no">NO</string>
 </resources>

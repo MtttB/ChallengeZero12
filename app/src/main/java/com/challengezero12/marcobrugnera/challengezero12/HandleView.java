@@ -2,6 +2,7 @@ package com.challengezero12.marcobrugnera.challengezero12;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -102,7 +103,7 @@ public class HandleView extends View{
     public void visualizeEndGameDialog(final int score) {
         AlertDialog.Builder alertDialogBuilder;
         final AlertDialog alertDialog;
-        alertDialogBuilder = new android.app.AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme));
+        alertDialogBuilder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme));
         View mView = ((GameActivity)context).getLayoutInflater().inflate(R.layout.dialog_layout, null);
         alertDialogBuilder.setView(mView);
         Button btnInvio = (Button) mView.findViewById(R.id.btnInvio);
@@ -121,5 +122,38 @@ public class HandleView extends View{
                 alertDialog.dismiss();
             }
         });
+    }
+
+    public void visualizePressedBackButtonDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.AppTheme));
+
+        String stitle    = context.getString(R.string.titolo_dialog_back_button);
+        String smessage  = context.getString(R.string.messaggio_dialog_back_button);
+        String syes      = context.getString(R.string.si);
+        String sno       = context.getString(R.string.no);
+
+        builder.setTitle(stitle)
+                .setMessage(smessage)
+                .setCancelable(false);
+
+
+        builder.setPositiveButton(syes, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                ((GameActivity)context).finish();
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton(sno, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }
