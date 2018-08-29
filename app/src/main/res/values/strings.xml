@@ -16,5 +16,6 @@
     <string name="no">NO</string>
     <string name="fine_partita">PARTITA TERMINATA</string>
     <string name="avvia_partita">Avvia la partita</string>
+    <string name="classifica">Classifica</string>
     <string name="benvenuto">BENVENUTO</string>
 </resources>
