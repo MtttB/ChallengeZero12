@@ -10,24 +10,20 @@ public class BricksWall {
         wall = new ArrayList<>();
     }
 
+    //Aggiunta di un oggetto Brick al muro
     public void addBrick (Brick brick) {
         wall.add(brick);
     }
 
+    //Rimozione di un oggetto Brick dal muro
     public void removeBrick (Brick brick) {
         wall.remove(brick);
     }
 
-    public ArrayList<Brick> getBricksWall () {
-        return wall;
-    }
-
-    public boolean bricksWallIsEmpty() {
-        return wall.size() == 0 ? true : false;
-    }
-
+    //Ritorna il numero di oggetti Brick che compongono il muro
     public int getBricksWallSize() { return wall.size(); }
 
+    //Ritorna l'oggetto Brick ad una certa posizione
     public Brick getBrickAtPos( int pos ) { return wall.get(pos); }
 
 

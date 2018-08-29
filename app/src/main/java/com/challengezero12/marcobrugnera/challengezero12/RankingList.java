@@ -3,6 +3,7 @@ package com.challengezero12.marcobrugnera.challengezero12;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+//Questo oggetto rappresenta la classifica
 public class RankingList implements Serializable{
 
     private ArrayList<PairPlayerScore> ranking_list;
@@ -12,8 +13,6 @@ public class RankingList implements Serializable{
     }
 
     public ArrayList<PairPlayerScore> getRankingList () { return ranking_list; }
-
-    public PairPlayerScore getObjectAtPosI (int i) { return ranking_list.get(i); }
 
     public boolean isEmpty() { return ranking_list.size() == 0 ? true : false; }
 

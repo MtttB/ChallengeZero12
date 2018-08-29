@@ -33,5 +33,4 @@ public abstract class Quad {
     public int getBottom() { return bottom; }
     public Rect getRect() { return r; }
 
-    public void setBorder () {p.setStyle(Paint.Style.STROKE);}
 }

@@ -22,6 +22,7 @@ public class GameActivity extends Activity{
         setContentView(R.layout.activity_game);
         layout = (RelativeLayout) findViewById(R.id.layout);
         try {
+            //Creo le classi necessarie
             engine = new Engine(this);
             ranking_list = new RankingList();
             hw = new HandleView(this, ranking_list);
@@ -32,15 +33,6 @@ public class GameActivity extends Activity{
         layout.addView(hw);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("onResume", "onResume");
-        //Visualizzazione della TextView che indica all'utente come fare
-        //per poter riprendere la partita in corso
-        //hw.visualizeTextView(true);
-    }
 
     @Override
     protected void onPause() {
@@ -60,6 +52,8 @@ public class GameActivity extends Activity{
     @Override
     public void finish() {
 
+        //Termino l'esecuzione dell'activity ritornando un Intent all'attivity
+        //che ha chiamato questa
         Intent data = new Intent();
         data.putExtra("return_intent_game_activity", "");
         Bundle bundle=new Bundle();
@@ -71,6 +65,8 @@ public class GameActivity extends Activity{
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+        //Intercetto se l'utente ha premuto il tasto back in questo caso
+        //viene mostrata una dialog per chiedere conferma
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             engine.pauseGame();
             hw.visualizePressedBackButtonDialog();

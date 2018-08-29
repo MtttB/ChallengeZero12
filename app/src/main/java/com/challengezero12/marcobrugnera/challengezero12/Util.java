@@ -8,16 +8,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Properties;
 
+//Questa classe di occupa di andare a recuperare le configurazioni
+//dal file config.properties
 public class Util {
-
-    public String getProperty(String key, Context context) throws IOException {
-        Properties properties = new Properties();
-        AssetManager assetManager = context.getAssets();
-        InputStream inputStream = assetManager.open("config.properties");
-        properties.load(inputStream);
-        return properties.getProperty(key);
-    }
-
 
     public static ArrayList<Object> getBallProperties(Context context) throws IOException {
 
@@ -101,8 +94,6 @@ public class Util {
 
         return tmp;
     }
-
-
 
     public static ArrayList<Integer> getBrickColorProperties(Context context) throws IOException{
         ArrayList<Integer> tmp = new ArrayList<>();

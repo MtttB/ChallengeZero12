@@ -2,7 +2,6 @@ package com.challengezero12.marcobrugnera.challengezero12;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +18,8 @@ public class RankingAdapter extends ArrayAdapter<PairPlayerScore> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Check if there is an existing list item view (called convertView) that we can reuse,
-        // otherwise, if convertView is null, then inflate a new list item layout.
+
+        //Verifico se c'è un'elemento della listView da poter riutilizzare
         View listItemView = convertView;
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(
@@ -37,11 +36,9 @@ public class RankingAdapter extends ArrayAdapter<PairPlayerScore> {
         player_name.setText(pps.getPlayerName());
 
         TextView player_score = (TextView) listItemView.findViewById(R.id.player_score);
-        //player_score.setText(pps.getScore());
         player_score.setText(Integer.toString(pps.getScore()));
 
-        Log.e("1 + 2", position + " | " + pps.isThePlayerJustPlayedinLocal());
-
+        //Colore di giallo le informazioni relative alla partita giocata dall'utente
         if (pps.isThePlayerJustPlayedinLocal()) {
             player_position.setTextColor(Color.YELLOW);
             player_name.setTextColor(Color.YELLOW);
@@ -52,8 +49,6 @@ public class RankingAdapter extends ArrayAdapter<PairPlayerScore> {
             player_score.setTextColor(Color.WHITE);
         }
 
-
-        // Return the list item view that is now showing the appropriate data
         return listItemView;
     }
 }

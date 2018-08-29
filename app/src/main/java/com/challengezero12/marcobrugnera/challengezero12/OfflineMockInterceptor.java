@@ -14,6 +14,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+//Interceptor che intercetta le richieste e produce delle risposte custom
 public class OfflineMockInterceptor implements Interceptor {
 
     private static final MediaType MEDIA_JSON = MediaType.parse("application/json");
@@ -27,16 +28,11 @@ public class OfflineMockInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
 
-        /* http://sample.com/hello will return "/hello" */
-        String path = request.url().toString();
-
-        /* I put a 'hello' file in debug/assets/mockData */
-        //InputStream stream = mContext.getAssets().open("mockData" + path);
+        //Leggo il file
         InputStream stream = mContext.getAssets().open("mockData.json");
-
-        /* Just read the file. */
         String json = parseStream(stream);
 
+        //Costruisco la risposta
         Response response = new Response.Builder()
                 .body(ResponseBody.create(MEDIA_JSON, json))
                 .request(chain.request())

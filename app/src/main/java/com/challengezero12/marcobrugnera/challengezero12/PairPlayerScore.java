@@ -2,6 +2,7 @@ package com.challengezero12.marcobrugnera.challengezero12;
 
 import java.io.Serializable;
 
+//Oggetto che rappresenta un giocatore e il suo punteggio
 public class PairPlayerScore implements Serializable{
 
     private String player;
