@@ -1,12 +1,12 @@
 package com.challengezero12.marcobrugnera.challengezero12;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private int REQUEST_CODE = 1;
     public RankingList ranking_list;
@@ -35,7 +35,17 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
             ranking_list = (RankingList)((data.getBundleExtra("bundle")).getSerializable("ranking_list"));
-            int h = 0;
+
+            //Avvio una nuova activity che si occuperà di visualizzare la classifica all'utente.
+
+            if (ranking_list != null && !ranking_list.isEmpty()) {
+                Intent intent = new Intent(getBaseContext(), RankingActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("ranking_list", ranking_list);
+                intent.putExtra("bundle", bundle);
+                startActivity(intent);
+            }
+
         }
     }
 

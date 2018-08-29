@@ -54,7 +54,7 @@ public class NetworkTask extends AsyncTask<String, Void, Void> {
             Collections.sort(ranking_list.getRankingList(), new Comparator<PairPlayerScore>() {
                 @Override
                 public int compare(PairPlayerScore o1, PairPlayerScore o2) {
-                    if (o1.getScore() <= o2.getScore()) return 1;
+                    if (o1.getScore() < o2.getScore()) return 1;
                     else return -1;
                 }});
 

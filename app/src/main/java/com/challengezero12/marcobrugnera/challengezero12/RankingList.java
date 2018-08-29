@@ -15,6 +15,8 @@ public class RankingList implements Serializable{
 
     public PairPlayerScore getObjectAtPosI (int i) { return ranking_list.get(i); }
 
+    public boolean isEmpty() { return ranking_list.size() == 0 ? true : false; }
+
     public void add (String name, int score) {
         ranking_list.add(new PairPlayerScore(name,score));
     }

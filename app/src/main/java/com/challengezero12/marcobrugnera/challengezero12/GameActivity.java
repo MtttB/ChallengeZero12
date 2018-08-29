@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.RelativeLayout;
 
 import java.io.IOException;
@@ -66,5 +67,14 @@ public class GameActivity extends Activity{
         data.putExtra("bundle",bundle);
         setResult(RESULT_OK, data);
         super.finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -13,4 +13,6 @@ public class PairPlayerScore implements Serializable{
 
     public int getScore() { return score; }
 
+    public String getPlayerName() { return player; }
+
 }
